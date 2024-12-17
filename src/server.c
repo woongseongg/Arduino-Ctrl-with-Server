@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 	
 	memset(&file_path, 0x00, sizeof(file_path));	// 파일 경로 변수 초기화
 	// 현재 날짜를 문자열로 변환하여 에러 로그 파일 이름에 추가
-	sprintf(m, "%02d", t->tm_mon + 1);		// 월을 문자열로 변환 (두 	
+	sprintf(m, "%02d", t->tm_mon + 1);		// 월을 문자열로 변환	
 	sprintf(d, "%02d", t->tm_mday);			// 일을 문자열로 변환
 	strcpy(error_date, "[");
 	strcat(error_date, m);				// 월 추가
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 	/* 클라이언트 배열 접근을 동기화하기 위한 뮤텍스 초기화 */
 	pthread_mutex_init(&mutx, NULL);
 
-	/* 1. 서버 소켓 생성 (TCP, IPv4) */
+	/* 1. socket() : 서버 소켓 생성 (TCP, IPv4) */
 	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
 	if(serv_sock == -1) {					// 소켓 생성 실패 시 오류 처리
 		error_handling("socket() error!");
@@ -131,16 +131,16 @@ int main(int argc, char *argv[]) {
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);		// 모든 IP 주소에서 연결 허용
 	serv_adr.sin_port = htons(atoi(argv[1]));		// 포트 번호 설정 (명령행 인수에서 가져옴)
 
-	/* 2. 서버 소켓과 주소를 바인딩 */
+	/* 2. bind() : 서버 소켓과 주소를 바인딩 */
 	if(bind(serv_sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1) {
 		error_handling("bind() error!");
 	}
-	/* 3. 클라이언트 연결 대기 (대기 큐 크기 5) */
+	/* 3. listen() : 클라이언트 연결 대기 (대기 큐 크기 5) */
 	if(listen(serv_sock, 5) == -1) {
 		error_handling("listen() error!");
 	}
 
-	/* 무한 루프를 통해 클라이언트 연결 요청 처리 */
+	/* 루프를 통해 클라이언트 연결 요청 처리 */
 	while(1) {
 		clnt_adr_sz = sizeof(clnt_adr);
 		clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
