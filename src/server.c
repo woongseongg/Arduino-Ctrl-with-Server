@@ -238,6 +238,10 @@ void *handle_clnt(void *arg) {
 }
 
 void send_to_buzzer(void *arg) {
+	/*
+	 * 목적: 
+	 *  - buzzer 측 클라이언트에 buzzer 제어 메세지 송신
+	 */
 	int clnt_sock = *((int*)arg);		// 클라이언트 소켓 디스크립터
 
 	write(clnt_sock, "BUZ_ON", 7);		// 클라이언트 소켓으로 "BUZ_ON" 문자열을 송신
@@ -245,6 +249,10 @@ void send_to_buzzer(void *arg) {
 }
 
 void send_to_led(void *arg) {
+	/*
+	 * 목적: 
+	 *  - led 측 클라이언트에 led 제어 메세지 송신
+	 */
 	int clnt_sock = *((int*)arg);		// 클라이언트 소켓 디스크립터
 
 	write(clnt_sock, "LED_ON", 7);		// 클라이언트 소켓으로 "LED_ON" 문자열을 송신
@@ -252,6 +260,10 @@ void send_to_led(void *arg) {
 }
 
 void send_to_servo(void *arg) {
+	/*
+	 * 목적: 
+	 *  - servo motor 측 클라이언트에 servo motor 제어 메세지 송신
+	 */
 	int clnt_sock = *((int*)arg);		// 클라이언트 소켓 디스크립터
 
 	write(clnt_sock, "DETECTED", 9);	// 클라이언트 소켓으로 "DETECTED" 문자열을 송신
@@ -310,6 +322,10 @@ void record_error(int data, int flag) {
 }
 
 void error_handling(char *msg) {
+	/*
+	 * 목적: 
+	 *  - 에러 발생 시 해당 에러 메세지를 출력하고 종료
+	 */
 	fputs(msg, stderr);		// 에러 메시지를 표준 에러 출력(stderr)에 출력
 	fputc('\n', stderr);
 	exit(1);			// 프로그램 종료 (비정상 종료)
