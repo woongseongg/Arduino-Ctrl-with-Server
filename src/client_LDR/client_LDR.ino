@@ -7,7 +7,7 @@ int status = 0; // 상태 플래그 (0: 작동, 1: 중지)
 String ssid = "jeongtong"; // Wi-fi 이름
 String PASSWORD = "12345678"; // Wi-fi 비밀번호
 String host = "192.168.0.75"; // 서버 주소
-String port = "9090"; // 서버 포트 번호
+String port = "9000"; // 서버 포트 번호
 
 // Wi-fi 연결 함수
 void connectWifi(){
