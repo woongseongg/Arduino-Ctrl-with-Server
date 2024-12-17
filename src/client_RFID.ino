@@ -133,7 +133,7 @@ void loop()
   while (Serial3.available()) {
     char ch = static_cast<char>(Serial3.read()); // 응답 수신
     Serial.print(ch); // 서버 응답 출력
-    if(ch == 'C'){ // 서버로부터 'C' 응답이 오는 경우
+    if(ch == 'Z'){ // 서버로부터 'Z' 응답이 오는 경우
       lcd.setCursor(0,0); // lcd 출력 위치
       lcd.print("DETECTED!"); // LCD 출력
       // 서보모터 제어
