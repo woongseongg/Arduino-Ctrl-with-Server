@@ -99,7 +99,7 @@ Arduino-Ctrl-with-Server/
 
 
 ### **1. 서버 실행**
-**make run**
+`make run`
 
 #### **빌드**  
 Makefile을 사용해 서버를 빌드합니다:
