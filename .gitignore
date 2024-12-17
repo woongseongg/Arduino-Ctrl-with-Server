@@ -1,0 +1,10 @@
+*.o
+svr
+
+
+*.txt
+
+build/
+dist
+
+

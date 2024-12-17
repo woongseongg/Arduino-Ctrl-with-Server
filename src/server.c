@@ -200,17 +200,20 @@ void *handle_clnt(void *arg) {
 				send_to_buzzer((void*)&clnt_sock);	// 클라이언트에 Buzzer 제어 지시를 위한 메세지 전송
         			record_error(int_data, flag); 		// 에러 로그 기록
 			}	
-			else {						// 정상 상태 메세지 전송
-				write(clnt_sock, "OK", 3);		
+			else {				
+				if(write(clnt_sock, "OK", 3) < 0) {	// 정상 상태 메세지 전송
+					error_handling("write \"ok\" in handle_clnt error!");
+				}		
 			}
 		} else if(flag == 1) {	// LED 제어 조건
 			if(int_data < DARK_POINT) {			// CDS 센서 값이 DARK_POINT 이하인 경우
 				send_to_led((void*)&clnt_sock);		// 클라이언트에 LED 제어 지시를 위한 메세지 전송
 				record_error(int_data, flag); 		// 에러 로그 기록
 			}
-			else {						// 정상 상태 메세지 전송
-				write(clnt_sock, "OK", 3);
-			}
+			else {									
+				if(write(clnt_sock, "OK", 3) < 0) {	// 정상 상태 메세지 전송
+					error_handling("write \"ok\" in handle_clnt error!");
+				}						}
 		} else if(flag == 2) {	// Servo motor 제어 조건
 			send_to_servo((void*)&clnt_sock);		// 클라이언트에 Servo motor 제어 지시를 위한 메세지 전송
 		}
@@ -242,10 +245,12 @@ void send_to_buzzer(void *arg) {
 	 * 목적: 
 	 *  - buzzer 측 클라이언트에 buzzer 제어 메세지 송신
 	 */
-	int clnt_sock = *((int*)arg);		// 클라이언트 소켓 디스크립터
+	int clnt_sock = *((int*)arg);			// 클라이언트 소켓 디스크립터
 
-	write(clnt_sock, "BUZ_ON", 7);		// 클라이언트 소켓으로 "BUZ_ON" 문자열을 송신
-	return;					// 함수 종료
+	if(write(clnt_sock, "BUZ_ON", 7) < 0) {		// 클라이언트 소켓으로 "BUZ_ON" 문자열을 송신
+		error_handling("write \"BUZ_ON\" in send_to_buzzer()");
+	}
+	return;						// 함수 종료
 }
 
 void send_to_led(void *arg) {
@@ -253,10 +258,12 @@ void send_to_led(void *arg) {
 	 * 목적: 
 	 *  - led 측 클라이언트에 led 제어 메세지 송신
 	 */
-	int clnt_sock = *((int*)arg);		// 클라이언트 소켓 디스크립터
+	int clnt_sock = *((int*)arg);			// 클라이언트 소켓 디스크립터
 
-	write(clnt_sock, "LED_ON", 7);		// 클라이언트 소켓으로 "LED_ON" 문자열을 송신
-	return;					// 함수 종료
+	if(write(clnt_sock, "LED_ON", 7) < 0) {		// 클라이언트 소켓으로 "LED_ON" 문자열을 송신
+		error_handling("write \"LED_ON\" in send_to_led()");
+	}
+	return;						// 함수 종료
 }
 
 void send_to_servo(void *arg) {
@@ -264,10 +271,12 @@ void send_to_servo(void *arg) {
 	 * 목적: 
 	 *  - servo motor 측 클라이언트에 servo motor 제어 메세지 송신
 	 */
-	int clnt_sock = *((int*)arg);		// 클라이언트 소켓 디스크립터
+	int clnt_sock = *((int*)arg);			// 클라이언트 소켓 디스크립터
 
-	write(clnt_sock, "DETECTED", 9);	// 클라이언트 소켓으로 "DETECTED" 문자열을 송신
-	return;					// 함수 종료
+	if(write(clnt_sock, "Z", 9) < 0) {		// 클라이언트 소켓으로 "DETECTED" 문자열을 송신
+		error_handling("write \"Z\" in send_to_servo()");
+	}
+	return;						// 함수 종료
 }
 
 void record_error(int data, int flag) {
@@ -313,12 +322,14 @@ void record_error(int data, int flag) {
          *  - '\n' (줄 바꿈)을 만나면 기록 종료
          */
 	for(int i=0;i<BUF_SIZ;i++) {
-		write(fp[flag], &error_info[i], 1);		// 한 글자씩 파일에 기록
-		if(!strcmp(&error_info[i], "\n")) {		// 줄 바꿈 문자를 만나면 종료
+		if(write(fp[flag], &error_info[i], 1) < 0) {		// 한 글자씩 파일에 기록
+			error_handling("write error information in record_error()");
+		}
+		if(!strcmp(&error_info[i], "\n")) {			// 줄 바꿈 문자를 만나면 종료
 			break;
 		}
 	}
-	return;							// 함수 종료
+	return;								// 함수 종료
 }
 
 void error_handling(char *msg) {
