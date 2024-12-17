@@ -40,20 +40,35 @@
 
 ## **4. 프로젝트 파일 구조**
 Arduino-Ctrl-with-Server/ 
+
 │ 
+
 ├── Makefile                # 서버 빌드 및 실행 자동화 
+
 ├── src/ 
+
 │    └── server.c           # 서버 프로그램 메인 소스 코드 
+
 │
+
 ├── arduino/
+
 │     ├── client_CDS.ino    # Arduino CDS 센서 클라이언트 코드 
+
 │     ├── client_US.ino     # Arduino 초음파 센서 클라이언트 코드 
+
 │     └── client_RFID.ino   # Arduino RFID 센서 클라이언트 코드 
+
 │
+
 ├── error/
+
 │     ├── error_US.txt      # 초음파 센서 에러 로그 파일 (실행 시 생성됨) 
+
 │     └── error_CDS.txt     # CDS 센서 에러 로그 파일 (실행 시 생성됨) 
+
 │
+
 └── README.md               # 프로젝트 설명 파일
 
 
