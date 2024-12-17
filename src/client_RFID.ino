@@ -136,21 +136,22 @@ void loop()
     if(ch == 'C'){ // 서버로부터 'C' 응답이 오는 경우
       lcd.setCursor(0,0); // lcd 출력 위치
       lcd.print("DETECTED!"); // LCD 출력
+      // 서보모터 제어
+      for (pos = 0; pos <= 180; pos += 1) // 위에 변수를 선언한 pos는 0, 180도보다 작다면 , 1도씩 더함
+      {
+        myservo.write(pos); // 서보모터를 pos 각도로 작동
+        delay(10); // 0.01초 대기 ( 1초 = 1000 )
+      }
+    
+      for (pos = 180; pos >= 0; pos -= 1) // pos가 180이면, 0도보다 크다면 , 1도씩 빼기
+      {
+        myservo.write(pos); // 서보모터를 pos 각도로 작동
+        delay(10); // 0.01초 대기 ( 1초 = 1000 )
+      }
     }
   }
   Serial.println("");
   
-  // 서보모터 제어
-  for (pos = 0; pos <= 180; pos += 1) // 위에 변수를 선언한 pos는 0, 180도보다 작다면 , 1도씩 더함
-  {
-    myservo.write(pos); // 서보모터를 pos 각도로 작동
-    delay(10); // 0.01초 대기 ( 1초 = 1000 )
-  }
-
-  for (pos = 180; pos >= 0; pos -= 1) // pos가 180이면, 0도보다 크다면 , 1도씩 빼기
-  {
-    myservo.write(pos); // 서보모터를 pos 각도로 작동
-    delay(10); // 0.01초 대기 ( 1초 = 1000 )
-  }
+  
   delay(2000); // 다음 loop 2초 대기
 }
